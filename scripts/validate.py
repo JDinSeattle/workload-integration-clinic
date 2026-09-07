@@ -4,6 +4,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]; sys.path.insert(0,str(ROOT))
 from evidence import command, digest, fresh, seal, write
 from service import Server, validate_request, CONFIGS
 from scripts.install import install
+from worker import WorkerSnapshot
 
 @contextlib.contextmanager
 def running(binary,config,log):
@@ -18,7 +19,8 @@ def request(url,body):
     req=urllib.request.Request(url+'/v1/gemm',data,{'Content-Type':'application/json'})
     try:
         with urllib.request.urlopen(req,timeout=5) as r: status=r.status; raw=r.read()
-    except urllib.error.HTTPError as e: status=e.code; raw=e.read()
+    except urllib.error.HTTPError as e:
+        with e:status=e.code;raw=e.read()
     return {'status':status,'body':json.loads(raw) if raw else {},'e2e_ms':(time.monotonic_ns()-start)/1e6,'id':body.get('id')}
 
 def case(size,identifier):
@@ -61,12 +63,14 @@ def main():
             b=case(2,label); b.update(edit); r=request(url,b); assert r['status']==400; failures.append({'fault':label,**r})
         # Permission denial applies to this test-owned copy, never the shared installed binary.
         blocked=out/'worker-no-exec'; blocked.write_bytes(binary.read_bytes()); blocked.chmod(0o600)
-        server.binary=blocked; r=request(url,case(2,'permission')); assert r['status']==502; failures.append({'fault':'permission',**r})
-        server.binary=binary; r=request(url,case(2,'recovered')); assert correct(case(2,'recovered'),r)
+        try:WorkerSnapshot(blocked);raise AssertionError('non-executable installation admitted')
+        except PermissionError:failures.append({'fault':'permission_at_install','status':'rejected'})
+        r=request(url,case(2,'recovered')); assert correct(case(2,'recovered'),r)
         blocked.unlink()
-        sleeper=out/'sleeper'; sleeper.write_text('#!/bin/sh\nexec sleep 5\n'); sleeper.chmod(0o700)
-        server.binary=sleeper; server.config['timeout']=.1
+        sleeper=out/'sleeper'; sleeper.write_text('#!/bin/sh\nif [ "$1" = "--version" ]; then echo "gemm-cpu-contract/1 fixed"; else exec sleep 5; fi\n'); sleeper.chmod(0o700)
+        original=server.worker;server.worker=WorkerSnapshot(sleeper);server.config['timeout']=.1
         r=request(url,case(2,'timeout')); assert r['status']==504; failures.append({'fault':'timeout',**r}); sleeper.unlink()
+        server.worker.close();server.worker=original
     # Native gprof gives actual code-level attribution in addition to timing evidence.
     profile_bin=ROOT/'build/gemm-profile'
     subprocess.run(['g++','-std=c++17','-O2','-pg','-fno-pie','-no-pie',str(ROOT/'vendor/gemm.cpp'),'-o',str(profile_bin)],check=True)

@@ -1,0 +1,74 @@
+[
+  {
+    "attempted": 48,
+    "business_success": 48,
+    "concurrency": 1,
+    "config": "compact",
+    "elapsed_s": 0.4601701710053021,
+    "meets_hypothetical_latency_target": true,
+    "p50_ms": 8.114705,
+    "p95_ms": 15.572782,
+    "rejected_503": 0,
+    "successful_rps": 104.30923824362128
+  },
+  {
+    "attempted": 48,
+    "business_success": 9,
+    "concurrency": 4,
+    "config": "compact",
+    "elapsed_s": 0.1420630880020326,
+    "meets_hypothetical_latency_target": true,
+    "p50_ms": 21.331432,
+    "p95_ms": 26.288214,
+    "rejected_503": 39,
+    "successful_rps": 63.35213549540209
+  },
+  {
+    "attempted": 48,
+    "business_success": 6,
+    "concurrency": 8,
+    "config": "compact",
+    "elapsed_s": 0.1430658179888269,
+    "meets_hypothetical_latency_target": true,
+    "p50_ms": 36.554139,
+    "p95_ms": 48.837406,
+    "rejected_503": 42,
+    "successful_rps": 41.938738996820234
+  },
+  {
+    "attempted": 48,
+    "business_success": 48,
+    "concurrency": 1,
+    "config": "throughput",
+    "elapsed_s": 0.3601385560032213,
+    "meets_hypothetical_latency_target": true,
+    "p50_ms": 7.1499445,
+    "p95_ms": 9.403853,
+    "rejected_503": 0,
+    "successful_rps": 133.2820360382926
+  },
+  {
+    "attempted": 48,
+    "business_success": 48,
+    "concurrency": 4,
+    "config": "throughput",
+    "elapsed_s": 0.3220806550089037,
+    "meets_hypothetical_latency_target": true,
+    "p50_ms": 22.8186355,
+    "p95_ms": 39.208727,
+    "rejected_503": 0,
+    "successful_rps": 149.03099349035128
+  },
+  {
+    "attempted": 48,
+    "business_success": 15,
+    "concurrency": 8,
+    "config": "throughput",
+    "elapsed_s": 0.16977528599090874,
+    "meets_hypothetical_latency_target": true,
+    "p50_ms": 44.082782,
+    "p95_ms": 74.523144,
+    "rejected_503": 33,
+    "successful_rps": 88.35208206218678
+  }
+]

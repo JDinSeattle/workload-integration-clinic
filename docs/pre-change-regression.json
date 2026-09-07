@@ -1,0 +1,21 @@
+{
+  "baseline_commit": "7a1d68e629a2ab00730c3c8ef93735058fbf695d",
+  "observed_before_edit": {
+    "project": "D",
+    "case": "worker_path_replacement",
+    "response": {
+      "id": "path-replacement",
+      "api_version": 1,
+      "values": [
+        123
+      ],
+      "kernel_us": 1,
+      "worker_sha256": "3438deea4810531221c6043dd7c1a4d8e617519db920698a86bf4ecc17ac39ae"
+    },
+    "original_worker_digest": "3438deea4810531221c6043dd7c1a4d8e617519db920698a86bf4ecc17ac39ae",
+    "expected_values": [
+      6
+    ]
+  },
+  "reproduction_after_fix": "tests/test_lifecycle.py"
+}

@@ -1,0 +1,77 @@
+[
+  {
+    "config": "compact",
+    "response": {
+      "body": {
+        "api_version": 1,
+        "id": "migration-0",
+        "kernel_us": 0.127,
+        "values": [
+          -1.5,
+          -1.5,
+          -1.5,
+          0.5,
+          0.5,
+          0.5,
+          0,
+          0,
+          0
+        ],
+        "worker_sha256": "3438deea4810531221c6043dd7c1a4d8e617519db920698a86bf4ecc17ac39ae"
+      },
+      "e2e_ms": 7.34979,
+      "id": "migration-0",
+      "status": 200
+    }
+  },
+  {
+    "config": "throughput",
+    "response": {
+      "body": {
+        "api_version": 1,
+        "id": "migration-1",
+        "kernel_us": 0.106,
+        "values": [
+          -1.5,
+          -1.5,
+          -1.5,
+          0.5,
+          0.5,
+          0.5,
+          0,
+          0,
+          0
+        ],
+        "worker_sha256": "3438deea4810531221c6043dd7c1a4d8e617519db920698a86bf4ecc17ac39ae"
+      },
+      "e2e_ms": 2.2769,
+      "id": "migration-1",
+      "status": 200
+    }
+  },
+  {
+    "config": "compact",
+    "response": {
+      "body": {
+        "api_version": 1,
+        "id": "migration-2",
+        "kernel_us": 0.202,
+        "values": [
+          -1.5,
+          -1.5,
+          -1.5,
+          0.5,
+          0.5,
+          0.5,
+          0,
+          0,
+          0
+        ],
+        "worker_sha256": "3438deea4810531221c6043dd7c1a4d8e617519db920698a86bf4ecc17ac39ae"
+      },
+      "e2e_ms": 2.561259,
+      "id": "migration-2",
+      "status": 200
+    }
+  }
+]

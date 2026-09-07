@@ -8,6 +8,12 @@ Two configurations (`compact`: one worker, dimensions ≤128; `throughput`: four
 
 The first load test exposed a real integration defect: closing an overloaded connection before reading its request body caused TCP resets. The fix bounds connection handlers separately and decides compute admission after reading a bounded body. The original failure is retained in `docs/failures/`. Native gprof profiles and paired kernel timings explain the row-loop optimization; HTTP latency includes parsing, serialization and process startup.
 
+## September 2026 maintenance
+
+A reproduced path-replacement bug returned changed computation bytes with the original startup digest. Startup now reads the executable once into a sealed Linux memfd, hashes those bytes, checks its version and runs only that descriptor. Admission and accepted/completed/failed counters share a condition lock. /live, /ready and /metrics expose lifecycle state. SIGTERM/SIGINT reject new work, drain accepted requests up to a deadline, then kill worker process groups and reap children. Actual HTTP tests cover graceful and forced drain, CLI SIGTERM, malformed workers and executable replacement.
+
+[Design, acceptance tests and limits](docs/refresh-20260907.md) · [Current measured results](docs/refresh-results-20260907.md). CI repeats validation on Python 3.12 and 3.14.7.
+
 ## Reproduce
 
 ```bash

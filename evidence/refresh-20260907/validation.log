@@ -1,0 +1,95 @@
+python3 -m unittest discover -s tests -v
+test_cli_sigterm_drains_an_accepted_request (test_lifecycle.LifecycleTests.test_cli_sigterm_drains_an_accepted_request) ... ok
+test_drain_deadline_kills_and_reaps_worker (test_lifecycle.LifecycleTests.test_drain_deadline_kills_and_reaps_worker) ... ok
+test_drain_rejects_new_work_and_preserves_inflight (test_lifecycle.LifecycleTests.test_drain_rejects_new_work_and_preserves_inflight) ... ok
+test_malformed_worker_output_is_backend_failure (test_lifecycle.LifecycleTests.test_malformed_worker_output_is_backend_failure) ... ok
+test_path_replacement_does_not_change_snapshot_or_result (test_lifecycle.LifecycleTests.test_path_replacement_does_not_change_snapshot_or_result) ... ok
+test_worker_timeout_releases_admission (test_lifecycle.LifecycleTests.test_worker_timeout_releases_admission) ... ok
+test_bad_shapes_and_values (test_service.ContractTests.test_bad_shapes_and_values) ... ok
+test_business_input (test_service.ContractTests.test_business_input) ... ok
+test_no_extra_fields (test_service.ContractTests.test_no_extra_fields) ... ok
+test_version (test_service.ContractTests.test_version) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 3.876s
+
+OK
+python3 scripts/validate.py --out .runs/latest
+{
+  "capacity": [
+    {
+      "config": "compact",
+      "concurrency": 1,
+      "attempted": 48,
+      "business_success": 48,
+      "rejected_503": 0,
+      "elapsed_s": 0.4601701710053021,
+      "successful_rps": 104.30923824362128,
+      "p50_ms": 8.114705,
+      "p95_ms": 15.572782,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "compact",
+      "concurrency": 4,
+      "attempted": 48,
+      "business_success": 9,
+      "rejected_503": 39,
+      "elapsed_s": 0.1420630880020326,
+      "successful_rps": 63.35213549540209,
+      "p50_ms": 21.331432,
+      "p95_ms": 26.288214,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "compact",
+      "concurrency": 8,
+      "attempted": 48,
+      "business_success": 6,
+      "rejected_503": 42,
+      "elapsed_s": 0.1430658179888269,
+      "successful_rps": 41.938738996820234,
+      "p50_ms": 36.554139,
+      "p95_ms": 48.837406,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "throughput",
+      "concurrency": 1,
+      "attempted": 48,
+      "business_success": 48,
+      "rejected_503": 0,
+      "elapsed_s": 0.3601385560032213,
+      "successful_rps": 133.2820360382926,
+      "p50_ms": 7.1499445,
+      "p95_ms": 9.403853,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "throughput",
+      "concurrency": 4,
+      "attempted": 48,
+      "business_success": 48,
+      "rejected_503": 0,
+      "elapsed_s": 0.3220806550089037,
+      "successful_rps": 149.03099349035128,
+      "p50_ms": 22.8186355,
+      "p95_ms": 39.208727,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "throughput",
+      "concurrency": 8,
+      "attempted": 48,
+      "business_success": 15,
+      "rejected_503": 33,
+      "elapsed_s": 0.16977528599090874,
+      "successful_rps": 88.35208206218678,
+      "p50_ms": 44.082782,
+      "p95_ms": 74.523144,
+      "meets_hypothetical_latency_target": true
+    }
+  ],
+  "fault_cases": 5,
+  "migration": "compact -> throughput -> compact passed"
+}

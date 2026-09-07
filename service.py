@@ -6,10 +6,12 @@ import json
 import math
 import os
 import pathlib
+import signal
 import socketserver
 import subprocess
 import threading
 import time
+from worker import WorkerSnapshot, WorkerStopped
 
 CONFIGS={'compact':{'workers':1,'max_dimension':128,'timeout':2.0},
          'throughput':{'workers':4,'max_dimension':256,'timeout':2.0}}
@@ -39,12 +41,35 @@ class Server(socketserver.ThreadingMixIn,http.server.HTTPServer):
     def __init__(self,address,binary,config,log=None):
         self.binary=pathlib.Path(binary).resolve(); self.config=CONFIGS[config].copy()
         self.slots=threading.BoundedSemaphore(32); self.log=log
-        self.compute=threading.BoundedSemaphore(self.config['workers'])
+        self.lifecycle=threading.Condition();self.draining=False;self.active=0
+        self.counts={'accepted':0,'completed':0,'failed':0,'rejected':0}
         self.write_lock=threading.Lock(); self.config_name=config
-        self.binary_sha256=hashlib.sha256(self.binary.read_bytes()).hexdigest()
-        version=subprocess.run([self.binary,'--version'],capture_output=True,text=True,timeout=3,check=True).stdout.strip()
-        if version!='gemm-cpu-contract/1 fixed': raise ValueError('worker version incompatible')
-        super().__init__(address,Handler)
+        self.worker=WorkerSnapshot(self.binary);self.binary_sha256=self.worker.digest
+        try:super().__init__(address,Handler)
+        except BaseException:self.worker.close();raise
+    def admit(self):
+        with self.lifecycle:
+            if self.draining or self.active>=self.config['workers']:
+                self.counts['rejected']+=1;return False
+            self.active+=1;self.counts['accepted']+=1;return True
+    def complete(self,status):
+        with self.lifecycle:
+            self.active-=1;self.counts['completed' if status==200 else 'failed']+=1;self.lifecycle.notify_all()
+    def begin_drain(self):
+        with self.lifecycle:self.draining=True;self.lifecycle.notify_all()
+    def status(self):
+        with self.lifecycle:return dict(self.counts,active=self.active,draining=self.draining)
+    def drain(self,timeout):
+        self.begin_drain()
+        with self.lifecycle:finished=self.lifecycle.wait_for(lambda:self.active==0,timeout)
+        if not finished:
+            self.worker.stop()
+            with self.lifecycle:finished=self.lifecycle.wait_for(lambda:self.active==0,2)
+        return finished
+    def shutdown_gracefully(self,timeout=3):
+        finished=self.drain(timeout);self.shutdown();self.server_close();return finished
+    def server_close(self):
+        super().server_close();self.worker.close()
     def process_request(self,request,client_address):
         if not self.slots.acquire(blocking=False):
             try: request.sendall(b'HTTP/1.1 503 Service Unavailable\r\nContent-Length: 0\r\nConnection: close\r\nRetry-After: 1\r\n\r\n')
@@ -68,6 +93,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
         try: self.wfile.write(data)
         except (BrokenPipeError,ConnectionResetError): pass
     def do_GET(self):
+        if self.path=='/live':return self.reply(200,{'alive':True})
+        if self.path=='/ready':return self.reply(503 if self.server.draining else 200,self.server.status())
+        if self.path=='/metrics':return self.reply(200,self.server.status())
         if self.path!='/health': return self.reply(404,{'error':'route'})
         self.reply(200,{'api_version':1,'config':self.server.config_name,
                         'worker_sha256':self.server.binary_sha256,'limits':self.server.config})
@@ -84,15 +112,18 @@ class Handler(http.server.BaseHTTPRequestHandler):
             raw=self.rfile.read(size)
             if len(raw)!=size: raise RequestError('input: incomplete body')
             body=json.loads(raw); m,n,k=validate_request(body,self.server.config); event_id=body['id']
-            acquired=self.server.compute.acquire(blocking=False)
+            acquired=self.server.admit()
             if not acquired:
                 status=503; return self.reply(status,{'error':'resource: workers occupied; retry with backoff'})
             data=' '.join(map(str,body['a']+body['b']))
-            p=subprocess.run([self.server.binary,'optimized',str(m),str(n),str(k),'1','0','stdin'],
-                             input=data,text=True,capture_output=True,timeout=self.server.config['timeout'])
+            p=self.server.worker.run(['optimized',str(m),str(n),str(k),'1','0','stdin'],data,self.server.config['timeout'])
             if p.returncode: status=502; return self.reply(status,{'error':'worker failed','returncode':p.returncode})
-            answer=json.loads(p.stdout)
-            if answer.get('protocol')!=1 or len(answer['values'])!=m*n: raise RuntimeError('worker output contract')
+            try:
+                answer=json.loads(p.stdout)
+                if type(answer.get('protocol')) is not int or answer['protocol']!=1 or len(answer['values'])!=m*n:raise ValueError()
+                if any(type(x) not in (int,float) or abs(x)>1e12 or not math.isfinite(x) for x in answer['values']):raise ValueError()
+                if len(answer['kernel_us'])!=1 or type(answer['kernel_us'][0]) not in (int,float) or not 0<answer['kernel_us'][0]<1e12:raise ValueError()
+            except (ValueError,TypeError,KeyError,AttributeError,OverflowError) as e:raise RuntimeError('worker output contract') from e
             status=200
             self.reply(status,{'id':event_id,'api_version':1,'values':answer['values'],
                     'kernel_us':answer['kernel_us'][0],'worker_sha256':self.server.binary_sha256})
@@ -105,7 +136,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         except (OSError,KeyError,RuntimeError):
             status=502; self.reply(status,{'error':'worker unavailable or invalid response'})
         finally:
-            if acquired: self.server.compute.release()
+            if acquired: self.server.complete(status)
             if self.server.log:
                 event={'event_id':event_id,'started_unix_ns':started,'finished_unix_ns':time.time_ns(),'http_status':status}
                 with self.server.write_lock:
@@ -113,10 +144,19 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--binary',default='build/gemm'); ap.add_argument('--port',type=int,default=8080)
-    ap.add_argument('--config',choices=CONFIGS,default='compact'); ap.add_argument('--log'); args=ap.parse_args()
+    ap.add_argument('--config',choices=CONFIGS,default='compact'); ap.add_argument('--log');ap.add_argument('--drain-seconds',type=float,default=3);args=ap.parse_args()
+    if not 0<args.drain_seconds<=60:ap.error('drain-seconds must be in (0,60]')
     server=Server(('127.0.0.1',args.port),args.binary,args.config,args.log)
     print(json.dumps({'address':server.server_address,'config':args.config}),flush=True)
-    try: server.serve_forever()
-    finally: server.server_close()
+    shutdown_threads=[]
+    def stop(signum,frame):
+        if shutdown_threads:return
+        server.begin_drain()
+        t=threading.Thread(target=server.shutdown_gracefully,args=(args.drain_seconds,));shutdown_threads.append(t);t.start()
+    signal.signal(signal.SIGTERM,stop);signal.signal(signal.SIGINT,stop)
+    try:server.serve_forever()
+    finally:
+        for t in shutdown_threads:t.join()
+        server.server_close()
 
 if __name__=='__main__': main()
