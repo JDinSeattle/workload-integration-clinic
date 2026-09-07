@@ -1,0 +1,33 @@
+{
+  "checks": [
+    {
+      "name": "executable_permission",
+      "pass": true,
+      "detail": "run python3 scripts/install.py to rebuild project-owned worker"
+    },
+    {
+      "name": "worker_protocol",
+      "pass": true,
+      "detail": "gemm-cpu-contract/1 fixed"
+    },
+    {
+      "name": "api_version",
+      "pass": true,
+      "detail": {
+        "api_version": 1,
+        "config": "throughput",
+        "worker_sha256": "3438deea4810531221c6043dd7c1a4d8e617519db920698a86bf4ecc17ac39ae",
+        "limits": {
+          "workers": 4,
+          "max_dimension": 256,
+          "timeout": 2.0
+        }
+      }
+    },
+    {
+      "name": "deployment_digest",
+      "pass": true,
+      "detail": "restart service after worker replacement"
+    }
+  ]
+}

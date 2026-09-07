@@ -1,0 +1,89 @@
+python3 -m unittest discover -s tests -v
+test_bad_shapes_and_values (test_service.ContractTests.test_bad_shapes_and_values) ... ok
+test_business_input (test_service.ContractTests.test_business_input) ... ok
+test_no_extra_fields (test_service.ContractTests.test_no_extra_fields) ... ok
+test_version (test_service.ContractTests.test_version) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK
+python3 scripts/validate.py --out .runs/latest
+{
+  "capacity": [
+    {
+      "config": "compact",
+      "concurrency": 1,
+      "attempted": 48,
+      "business_success": 48,
+      "rejected_503": 0,
+      "elapsed_s": 0.41870870599814225,
+      "successful_rps": 114.63817043300975,
+      "p50_ms": 8.6657575,
+      "p95_ms": 9.438984,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "compact",
+      "concurrency": 4,
+      "attempted": 48,
+      "business_success": 9,
+      "rejected_503": 39,
+      "elapsed_s": 0.16313206699851435,
+      "successful_rps": 55.1700236844419,
+      "p50_ms": 22.586133,
+      "p95_ms": 26.900227,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "compact",
+      "concurrency": 8,
+      "attempted": 48,
+      "business_success": 9,
+      "rejected_503": 39,
+      "elapsed_s": 0.18451315200945828,
+      "successful_rps": 48.777010754976715,
+      "p50_ms": 38.054808,
+      "p95_ms": 46.408147,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "throughput",
+      "concurrency": 1,
+      "attempted": 48,
+      "business_success": 48,
+      "rejected_503": 0,
+      "elapsed_s": 0.5141437089914689,
+      "successful_rps": 93.35911178249282,
+      "p50_ms": 8.3279575,
+      "p95_ms": 19.665853,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "throughput",
+      "concurrency": 4,
+      "attempted": 48,
+      "business_success": 48,
+      "rejected_503": 0,
+      "elapsed_s": 0.248394571011886,
+      "successful_rps": 193.24093841689938,
+      "p50_ms": 18.2416925,
+      "p95_ms": 27.414048,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "throughput",
+      "concurrency": 8,
+      "attempted": 48,
+      "business_success": 31,
+      "rejected_503": 17,
+      "elapsed_s": 0.24472875300853048,
+      "successful_rps": 126.67085341998795,
+      "p50_ms": 39.976325,
+      "p95_ms": 75.885819,
+      "meets_hypothetical_latency_target": true
+    }
+  ],
+  "fault_cases": 5,
+  "migration": "compact -> throughput -> compact passed"
+}

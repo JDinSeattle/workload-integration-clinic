@@ -1,0 +1,47 @@
+[
+  {
+    "body": {
+      "error": "version: supported api_version=1"
+    },
+    "e2e_ms": 2.557282,
+    "fault": "version",
+    "id": "version",
+    "status": 400
+  },
+  {
+    "body": {
+      "error": "resource: dimension outside configured limit"
+    },
+    "e2e_ms": 2.793984,
+    "fault": "resource",
+    "id": "resource",
+    "status": 400
+  },
+  {
+    "body": {
+      "error": "input: matrix length"
+    },
+    "e2e_ms": 2.481682,
+    "fault": "input",
+    "id": "input",
+    "status": 400
+  },
+  {
+    "body": {
+      "error": "worker permission denied"
+    },
+    "e2e_ms": 3.918067,
+    "fault": "permission",
+    "id": "permission",
+    "status": 502
+  },
+  {
+    "body": {
+      "error": "worker deadline exceeded"
+    },
+    "e2e_ms": 104.297859,
+    "fault": "timeout",
+    "id": "timeout",
+    "status": 504
+  }
+]

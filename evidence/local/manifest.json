@@ -1,0 +1,57 @@
+{
+  "artifact_sha256": {
+    "capacity.json": "85af31285af7e77a3a861e1ffe71ad636a9c8d44c64cfb807dc7f3f71836027c",
+    "doctor-compact.json": "3ebefde9560039991ef5f61055131dd34a587a86313a43404695d6d817d6b0a6",
+    "doctor-throughput.json": "97998a9089bb0462a5df21405fe7e639b14b23034f2208a8429ff4d253bcef07",
+    "faults.json": "2710e74384a086261bac9c5e2ed6f78fbe549008f3b2ee28b21fd7a2543ec686",
+    "gprof-optimized.txt": "c72f23549d64fe2a8eaf96ecd2b7d1e3b528d0f41ebb643b324a590961ac5556",
+    "gprof-reference.txt": "457b163780e9703cf6a5b040b8b603b6bb24347ace5dde066addc67324582e32",
+    "http.jsonl": "35b843b8254b65480da6f1ce0d69d8ba333c91e363663914c43cda458d47222c",
+    "kernel-pairs.json": "dc4b8f4c2af52f2f00f3caf138b4ae24f1079202ad552ef5ef0933704bcec736",
+    "migration.json": "c7e36d73380c2c888663c63914a102d052b7b91c8cdf0284d1eb1cbdc8aea8d8",
+    "service.jsonl": "6f0e9067c67d9fb7dd415c01ee5cb749610d036908c8657736cbd09b31b0acf8",
+    "validation.log": "23066bc7cdbd02f09132a4bf04ae7613ab6bc4d98d21132f81eb3de0a4521bef"
+  },
+  "details": {
+    "SLO": "hypothetical brief: successful p95 <100 ms for 64^3 concurrency=1; overload explicitly rejected",
+    "binary_sha256": "3438deea4810531221c6043dd7c1a4d8e617519db920698a86bf4ecc17ac39ae",
+    "compiler": "g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "focused_tests": 4,
+    "handoff": "author self-test; no independent customer/user",
+    "installer_repeated": true,
+    "measurement_run_utc": "2026-09-07T21:47:29Z",
+    "profile_limit": "gprof instrumented binary differs from O3 benchmark; sampling granularity may produce no samples for short optimized calls"
+  },
+  "environment": {
+    "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+    "kernel": "7.0.0-29-generic",
+    "logical_cpus": 32,
+    "machine": "x86_64",
+    "python": "3.14.4 (main, Jun 18 2026, 14:25:02) [GCC 15.2.0]"
+  },
+  "execution": "real local CPU processes; author-operated",
+  "run_utc": "2026-09-07T21:48:19Z",
+  "schema": 1,
+  "source_sha256": {
+    ".github/workflows/ci.yml": "aa23885bb86b72f89a8352f6a688e357ef13e72839f58852c22abf1c2a6f6326",
+    ".gitignore": "f01f7794de7a21670ab309a8171ce8dc857d1696e6c3340bb451006bf83ff171",
+    "LICENSE": "3c4007918aa9889a47e12beb02f2501829853e731e793779205f2b53443345bc",
+    "Makefile": "ade1332900151d5e487130bf0463e2a6d5c30c9cddd3e3c90b91be5256fe7662",
+    "README.md": "9f023b1eacc17355a2bc58e8d9b5614fbcf076e153551a37c7c0ae7eae48cf4a",
+    "docs/brief-and-handoff.md": "64d1c714759f1b229a8bbf143388c49dcbdd3b0a6c1e60ab8ed16e8c99f932d7",
+    "docs/engineering.md": "cd874f1694758ecd27dcbff6cfbdde3e7d974d90f608c4a811e400f78d5c4a84",
+    "docs/failures/overload-before-fix.txt": "d0523504242bcc2bdfad0441716db818caed6cef89379feed0c5f1c1d32a43eb",
+    "docs/interview.md": "f16acd690021bb89e15259b5ae59ce015747cd7f8e1105ce94a7cc42a2f38b55",
+    "docs/results.md": "26697b71c7df2e4b799343e47133ee2089b0b8199c4f08de21dcbda871318dc6",
+    "evidence.py": "b22c6611b15e003bf442aa50322ab4bbd1981ea7be50e61971cbdb3fed368c9b",
+    "scripts/doctor.py": "385dc52cd78f8e0ec733b7037413437d65ca1d3edca19d730da6704b9f92bbf8",
+    "scripts/install.py": "d2944f699b2a0b57e6de8de5529a8e1ccc9761ec2cfe12a7b7c17e6dd5aaac1d",
+    "scripts/validate.py": "64a67b927b0cccca5b3f91aff9d002dcae7064930ce93381dc08632a80ace7b3",
+    "service.py": "9776d57169cfab623ba54c4da1973a4486b056c6cdc40d7dd26bb95033fefac5",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/test_service.py": "65f2a7f2731bd12dcd241681efa9e439175b3fd1d7429ddd9da564275f03304c",
+    "vendor/LICENSE": "3c4007918aa9889a47e12beb02f2501829853e731e793779205f2b53443345bc",
+    "vendor/gemm.cpp": "a08c98ddf9b9e5d45a53bbd4161561fb030fc7333bb7e2b0c0d0e86f4930ab33",
+    "vendor/lock.json": "e9c12bfbdd80de44839ccfe17c5cc719174f534953ba68650d33d9197dd47287"
+  }
+}
