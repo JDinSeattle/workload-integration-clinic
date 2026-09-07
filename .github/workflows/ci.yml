@@ -24,6 +24,8 @@ jobs:
         with:
           name: validation-evidence-python-${{ matrix.python }}
           path: .runs/
+          include-hidden-files: true
+          if-no-files-found: error
 
   containers:
     runs-on: ubuntu-24.04
