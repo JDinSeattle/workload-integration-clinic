@@ -1,0 +1,9 @@
+{
+  "all_expected": true,
+  "checks": 11,
+  "cohorts": 6,
+  "offered_requests": 288,
+  "performance_claim": null,
+  "rejected_503": 117,
+  "successful_requests": 171
+}

@@ -1,0 +1,10 @@
+# Test-only image includes a slow worker fixture. Production API flags stay unchanged.
+services:
+  api:
+    image: ${COMPOSE_PROJECT_NAME:-workload-clinic}-fixture
+    build:
+      context: .
+      target: fixture
+    environment:
+      FIXTURE_SLEEP: "${FIXTURE_SLEEP:-1}"
+    command: [python, service.py, --host, 0.0.0.0, --port, "8080", --binary, /app/container/slow_worker.py, --drain-seconds, "${FIXTURE_DRAIN:-3}"]

@@ -1,0 +1,13 @@
+*
+!Dockerfile
+!service.py
+!worker.py
+!evidence.py
+!vendor/
+!vendor/**
+!scripts/
+!scripts/validate.py
+!scripts/install.py
+!container/
+!container/client.py
+!container/slow_worker.py

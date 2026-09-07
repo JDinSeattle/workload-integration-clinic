@@ -1,0 +1,4 @@
+make: Entering directory '/home/postedism/Desktop/crosscutting-careers/D-workload-integration-clinic'
+python3 scripts/validate_containers.py --out .runs/container
+{"checks": 11, "offered_requests": 288, "all_expected": true}
+make: Leaving directory '/home/postedism/Desktop/crosscutting-careers/D-workload-integration-clinic'

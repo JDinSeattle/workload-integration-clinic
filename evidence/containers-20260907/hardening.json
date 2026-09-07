@@ -1,0 +1,18 @@
+{
+  "cgroup": {
+    "cpu.max": "100000 100000",
+    "memory.max": "268435456",
+    "memory.swap.max": "0",
+    "pids.max": "64"
+  },
+  "status": {
+    "CapEff": "0000000000000000",
+    "NoNewPrivs": "1",
+    "Seccomp": "2"
+  },
+  "uid": 10001,
+  "write_errno": {
+    "rootfs": 30,
+    "worker": 13
+  }
+}

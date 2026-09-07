@@ -14,6 +14,10 @@ A reproduced path-replacement bug returned changed computation bytes with the or
 
 [Design, acceptance tests and limits](docs/refresh-20260907.md) · [Current measured results](docs/refresh-results-20260907.md). CI repeats validation on Python 3.12 and 3.14.7.
 
+## Docker integration
+
+`make container-verify` builds and runs real isolated Compose tests, captures raw evidence, and cleans up its own resources. [Architecture, reproduction and acceptance contracts](docs/containers.md) · [Measured container results](docs/container-results.md). Native evidence and container evidence are labeled separately. Hosted CI repeats both.
+
 ## Reproduce
 
 ```bash

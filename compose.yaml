@@ -1,0 +1,39 @@
+x-runtime: &runtime
+  image: ${COMPOSE_PROJECT_NAME:-workload-clinic}-runtime
+  build:
+    context: .
+    target: runtime
+  pull_policy: never
+  platform: linux/amd64
+  user: "10001:10001"
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  pids_limit: 64
+  cpus: 1.0
+  mem_limit: 256m
+  memswap_limit: 256m
+  tmpfs: ["/tmp:size=16m,mode=1777"]
+  stop_grace_period: 8s
+services:
+  api:
+    <<: *runtime
+    command: [python, service.py, --host, 0.0.0.0, --port, "8080", --config, "${CLINIC_CONFIG:-compact}", --drain-seconds, "3"]
+    ports: ["127.0.0.1::8080"]
+    networks: [backend]
+    healthcheck:
+      test: [CMD, python, container/client.py, health, --url, "http://127.0.0.1:8080"]
+      interval: 1s
+      timeout: 2s
+      retries: 20
+  client:
+    <<: *runtime
+    profiles: [tools]
+    command: [python, container/client.py, load]
+    networks: [backend]
+    depends_on:
+      api:
+        condition: service_healthy
+networks:
+  backend:
+    driver: bridge

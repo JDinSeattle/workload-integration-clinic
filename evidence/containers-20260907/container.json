@@ -1,0 +1,94 @@
+{
+  "cap_drop": [
+    "ALL"
+  ],
+  "cmd": [
+    "python",
+    "service.py",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080",
+    "--config",
+    "compact",
+    "--drain-seconds",
+    "3"
+  ],
+  "entrypoint": null,
+  "health": {
+    "FailingStreak": 0,
+    "Log": [
+      {
+        "End": "2026-09-07T16:36:43.092094675-07:00",
+        "ExitCode": 0,
+        "Output": "",
+        "Start": "2026-09-07T16:36:42.719638996-07:00"
+      }
+    ],
+    "Status": "healthy"
+  },
+  "id": "6f50f7581e222e5fd28fd1ff5e6e21f249fce695acfc13b964f26ae24bee7c41",
+  "image_id": "sha256:651f4a1eb09c18e92eafd7cff6d55313363e0c02f70363be2ac32c5d5fcf5967",
+  "memory_bytes": 268435456,
+  "memory_swap_bytes": 268435456,
+  "mounts": [],
+  "nano_cpus": 1000000000,
+  "networks": {
+    "cc-workload-17ce96c5a33d_backend": {
+      "Aliases": [
+        "cc-workload-17ce96c5a33d-api-1",
+        "api"
+      ],
+      "DNSNames": [
+        "cc-workload-17ce96c5a33d-api-1",
+        "api",
+        "6f50f7581e22"
+      ],
+      "DriverOpts": null,
+      "EndpointID": "595dd2d4b0db0686e693566b20d6e56b6f2961d0756dd3bc1ca29d4681771c96",
+      "Gateway": "172.31.0.1",
+      "GlobalIPv6Address": "",
+      "GlobalIPv6PrefixLen": 0,
+      "GwPriority": 0,
+      "IPAMConfig": null,
+      "IPAddress": "172.31.0.2",
+      "IPPrefixLen": 16,
+      "IPv6Gateway": "",
+      "Links": null,
+      "MacAddress": "52:60:de:db:1b:5e",
+      "NetworkID": "91d0d98c40adf32bd914251dace95f46c57297ce4c91bfd91e43060c011ddb0e"
+    }
+  },
+  "pids_limit": 64,
+  "privileged": false,
+  "readonly_rootfs": true,
+  "security_opt": [
+    "no-new-privileges:true"
+  ],
+  "state": {
+    "Dead": false,
+    "Error": "",
+    "ExitCode": 0,
+    "FinishedAt": "0001-01-01T00:00:00Z",
+    "Health": {
+      "FailingStreak": 0,
+      "Log": [
+        {
+          "End": "2026-09-07T16:36:43.092094675-07:00",
+          "ExitCode": 0,
+          "Output": "",
+          "Start": "2026-09-07T16:36:42.719638996-07:00"
+        }
+      ],
+      "Status": "healthy"
+    },
+    "OOMKilled": false,
+    "Paused": false,
+    "Pid": 2426029,
+    "Restarting": false,
+    "Running": true,
+    "StartedAt": "2026-09-07T23:36:41.567489338Z",
+    "Status": "running"
+  },
+  "user": "10001:10001"
+}

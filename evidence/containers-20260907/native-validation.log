@@ -1,0 +1,97 @@
+make: Entering directory '/home/postedism/Desktop/crosscutting-careers/D-workload-integration-clinic'
+python3 -m unittest discover -s tests -v
+test_cli_sigterm_drains_an_accepted_request (test_lifecycle.LifecycleTests.test_cli_sigterm_drains_an_accepted_request) ... ok
+test_drain_deadline_kills_and_reaps_worker (test_lifecycle.LifecycleTests.test_drain_deadline_kills_and_reaps_worker) ... ok
+test_drain_rejects_new_work_and_preserves_inflight (test_lifecycle.LifecycleTests.test_drain_rejects_new_work_and_preserves_inflight) ... ok
+test_malformed_worker_output_is_backend_failure (test_lifecycle.LifecycleTests.test_malformed_worker_output_is_backend_failure) ... ok
+test_path_replacement_does_not_change_snapshot_or_result (test_lifecycle.LifecycleTests.test_path_replacement_does_not_change_snapshot_or_result) ... ok
+test_worker_timeout_releases_admission (test_lifecycle.LifecycleTests.test_worker_timeout_releases_admission) ... ok
+test_bad_shapes_and_values (test_service.ContractTests.test_bad_shapes_and_values) ... ok
+test_business_input (test_service.ContractTests.test_business_input) ... ok
+test_no_extra_fields (test_service.ContractTests.test_no_extra_fields) ... ok
+test_version (test_service.ContractTests.test_version) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 4.093s
+
+OK
+python3 scripts/validate.py --out .runs/latest
+{
+  "capacity": [
+    {
+      "config": "compact",
+      "concurrency": 1,
+      "attempted": 48,
+      "business_success": 48,
+      "rejected_503": 0,
+      "elapsed_s": 0.45727459600311704,
+      "successful_rps": 104.96974994795644,
+      "p50_ms": 9.137114,
+      "p95_ms": 12.442102,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "compact",
+      "concurrency": 4,
+      "attempted": 48,
+      "business_success": 7,
+      "rejected_503": 41,
+      "elapsed_s": 0.16363641701173037,
+      "successful_rps": 42.77776382440714,
+      "p50_ms": 27.874865,
+      "p95_ms": 31.52975,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "compact",
+      "concurrency": 8,
+      "attempted": 48,
+      "business_success": 8,
+      "rejected_503": 40,
+      "elapsed_s": 1.1824063569947612,
+      "successful_rps": 6.765863489040296,
+      "p50_ms": 43.368412,
+      "p95_ms": 1064.995404,
+      "meets_hypothetical_latency_target": false
+    },
+    {
+      "config": "throughput",
+      "concurrency": 1,
+      "attempted": 48,
+      "business_success": 48,
+      "rejected_503": 0,
+      "elapsed_s": 0.5158874260087032,
+      "successful_rps": 93.04355481459287,
+      "p50_ms": 10.282054,
+      "p95_ms": 12.662165,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "throughput",
+      "concurrency": 4,
+      "attempted": 48,
+      "business_success": 48,
+      "rejected_503": 0,
+      "elapsed_s": 0.37939392299449537,
+      "successful_rps": 126.51757735375332,
+      "p50_ms": 25.838041500000003,
+      "p95_ms": 81.003968,
+      "meets_hypothetical_latency_target": true
+    },
+    {
+      "config": "throughput",
+      "concurrency": 8,
+      "attempted": 48,
+      "business_success": 15,
+      "rejected_503": 33,
+      "elapsed_s": 0.17767881500185467,
+      "successful_rps": 84.42199482163039,
+      "p50_ms": 44.657337,
+      "p95_ms": 82.838188,
+      "meets_hypothetical_latency_target": true
+    }
+  ],
+  "fault_cases": 5,
+  "migration": "compact -> throughput -> compact passed"
+}
+make: Leaving directory '/home/postedism/Desktop/crosscutting-careers/D-workload-integration-clinic'

@@ -24,3 +24,19 @@ jobs:
         with:
           name: validation-evidence-python-${{ matrix.python }}
           path: .runs/
+
+  containers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-python@751276eafca55f10f252026015f43c488f2322ba
+        with:
+          python-version: "3.14.7"
+      - name: Real Docker integration and failure recovery
+        run: make container-verify
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: docker-integration-evidence
+          path: .runs/container/

@@ -1,0 +1,100 @@
+{
+  "name": "cc-workload-17ce96c5a33d",
+  "networks": {
+    "backend": {
+      "driver": "bridge",
+      "ipam": {},
+      "name": "cc-workload-17ce96c5a33d_backend"
+    }
+  },
+  "services": {
+    "api": {
+      "build": {
+        "context": "/home/postedism/Desktop/crosscutting-careers/D-workload-integration-clinic",
+        "dockerfile": "Dockerfile",
+        "target": "runtime"
+      },
+      "cap_drop": [
+        "ALL"
+      ],
+      "command": [
+        "python",
+        "service.py",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8080",
+        "--config",
+        "compact",
+        "--drain-seconds",
+        "3"
+      ],
+      "cpus": 1,
+      "entrypoint": null,
+      "healthcheck": {
+        "interval": "1s",
+        "retries": 20,
+        "test": [
+          "CMD",
+          "python",
+          "container/client.py",
+          "health",
+          "--url",
+          "http://127.0.0.1:8080"
+        ],
+        "timeout": "2s"
+      },
+      "image": "cc-workload-17ce96c5a33d-runtime",
+      "mem_limit": "268435456",
+      "memswap_limit": "268435456",
+      "networks": {
+        "backend": null
+      },
+      "pids_limit": 64,
+      "platform": "linux/amd64",
+      "ports": [
+        {
+          "host_ip": "127.0.0.1",
+          "mode": "ingress",
+          "protocol": "tcp",
+          "target": 8080
+        }
+      ],
+      "pull_policy": "never",
+      "read_only": true,
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "stop_grace_period": "8s",
+      "tmpfs": [
+        "/tmp:size=16m,mode=1777"
+      ],
+      "user": "10001:10001"
+    }
+  },
+  "x-runtime": {
+    "build": {
+      "context": ".",
+      "target": "runtime"
+    },
+    "cap_drop": [
+      "ALL"
+    ],
+    "cpus": 1,
+    "image": "cc-workload-17ce96c5a33d-runtime",
+    "mem_limit": "256m",
+    "memswap_limit": "256m",
+    "pids_limit": 64,
+    "platform": "linux/amd64",
+    "pull_policy": "never",
+    "read_only": true,
+    "security_opt": [
+      "no-new-privileges:true"
+    ],
+    "stop_grace_period": "8s",
+    "tmpfs": [
+      "/tmp:size=16m,mode=1777"
+    ],
+    "user": "10001:10001"
+  }
+}

@@ -143,10 +143,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
                     with open(self.server.log,'a') as f: f.write(json.dumps(event)+'\n')
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument('--binary',default='build/gemm'); ap.add_argument('--port',type=int,default=8080)
+    ap=argparse.ArgumentParser(); ap.add_argument('--binary',default='build/gemm'); ap.add_argument('--port',type=int,default=8080);ap.add_argument('--host',default='127.0.0.1')
     ap.add_argument('--config',choices=CONFIGS,default='compact'); ap.add_argument('--log');ap.add_argument('--drain-seconds',type=float,default=3);args=ap.parse_args()
     if not 0<args.drain_seconds<=60:ap.error('drain-seconds must be in (0,60]')
-    server=Server(('127.0.0.1',args.port),args.binary,args.config,args.log)
+    server=Server((args.host,args.port),args.binary,args.config,args.log)
     print(json.dumps({'address':server.server_address,'config':args.config}),flush=True)
     shutdown_threads=[]
     def stop(signum,frame):

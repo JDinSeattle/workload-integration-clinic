@@ -1,0 +1,81 @@
+{
+  "compose": "5.3.1",
+  "docker": {
+    "Client": {
+      "ApiVersion": "1.56",
+      "Arch": "amd64",
+      "BuildTime": "Thu Sep  3 21:50:20 2026",
+      "Context": "default",
+      "DefaultAPIVersion": "1.56",
+      "GitCommit": "88096ef",
+      "GoVersion": "go1.26.8",
+      "Os": "linux",
+      "Platform": {
+        "Name": "Docker Engine - Community"
+      },
+      "Version": "29.8.0"
+    },
+    "Server": {
+      "ApiVersion": "1.56",
+      "Arch": "amd64",
+      "BuildTime": "2026-09-03T21:50:20.000000000+00:00",
+      "Components": [
+        {
+          "Details": {
+            "ApiVersion": "1.56",
+            "Arch": "amd64",
+            "BuildTime": "Thu Sep  3 21:50:20 2026",
+            "Experimental": "false",
+            "GitCommit": "3ce5872",
+            "GoVersion": "go1.26.8",
+            "KernelVersion": "7.0.0-29-generic",
+            "MinAPIVersion": "1.40",
+            "Module": "github.com/moby/moby/v2",
+            "ModuleVersion": "v2.0.0+unknown",
+            "Os": "linux"
+          },
+          "Name": "Engine",
+          "Version": "29.8.0"
+        },
+        {
+          "Details": {
+            "GitCommit": "db8809540e1a7a9da5d518876894933ff55692ab"
+          },
+          "Name": "containerd",
+          "Version": "v2.3.4"
+        },
+        {
+          "Details": {
+            "GitCommit": "v1.5.1-0-g8f2685a4"
+          },
+          "Name": "runc",
+          "Version": "1.5.1"
+        },
+        {
+          "Details": {
+            "GitCommit": "de40ad0"
+          },
+          "Name": "docker-init",
+          "Version": "0.19.0"
+        }
+      ],
+      "GitCommit": "3ce5872",
+      "GoVersion": "go1.26.8",
+      "KernelVersion": "7.0.0-29-generic",
+      "MinAPIVersion": "1.40",
+      "Os": "linux",
+      "Platform": {
+        "Name": "Docker Engine - Community"
+      },
+      "Version": "29.8.0"
+    }
+  },
+  "host": {
+    "cgroup_version": "2",
+    "cpus": 32,
+    "kernel": "7.0.0-29-generic",
+    "os": "Ubuntu 26.04.1 LTS"
+  },
+  "project": "cc-workload-17ce96c5a33d",
+  "scope": "local Docker Engine; test-owned bridge networks, volumes and containers; not cloud service deployment"
+}

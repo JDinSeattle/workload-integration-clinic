@@ -1,0 +1,8 @@
+{
+  "observed": "Initial direct allocation container exited 137 but Docker State.OOMKilled was false. Exit code alone was insufficient to attribute the cause.",
+  "state": {
+    "ExitCode": 137,
+    "OOMKilled": false
+  },
+  "replacement_validation": "Run a supervised allocating child and require a memory.events oom_kill counter increment plus SIGKILL, while recording memory.max."
+}
