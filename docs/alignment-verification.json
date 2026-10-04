@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-10-04T04:18:23.224996+00:00",
+  "provenance": "Owner-confirmed cloud results remain separate from these local checks.",
+  "notes": [
+    "11 native tests and 11 Docker checks passed. New local container run offered 432 requests across 3 profiles, separate from supplied cloud 288-request campaign.",
+    "Adds qualified 8-handler/2-worker, 2CPU/256MiB, 2s drain profile and admission/profile migration tests."
+  ],
+  "checks": [
+    {
+      "command": "make verify evidence-check",
+      "exit_code": 0,
+      "elapsed_seconds": 9.99,
+      "log_sha256": "ad9f0149301e5a3d0b2391c71a1ef3d956fb112986446879976f64ceb9650ed1"
+    },
+    {
+      "command": "make verify evidence-check",
+      "exit_code": 0,
+      "elapsed_seconds": 12.91,
+      "log_sha256": "8260f80e8ba667c47e312610ba90cacef299d5385c012766715b0cc260738ccd"
+    },
+    {
+      "command": "make container-verify",
+      "exit_code": 0,
+      "log_sha256": "bfae75ca51b2c29cb4f057755b725920141c2b829b9a7172e44f9741f6f57028"
+    }
+  ]
+}

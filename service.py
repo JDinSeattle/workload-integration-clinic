@@ -14,7 +14,8 @@ import time
 from worker import WorkerSnapshot, WorkerStopped
 
 CONFIGS={'compact':{'workers':1,'max_dimension':128,'timeout':2.0},
-         'throughput':{'workers':4,'max_dimension':256,'timeout':2.0}}
+         'throughput':{'workers':4,'max_dimension':256,'timeout':2.0},
+         'qualified':{'workers':2,'handlers':8,'max_dimension':128,'timeout':2.0}}
 MAX_BODY=1024*1024
 
 class RequestError(ValueError): pass
@@ -40,7 +41,7 @@ class Server(socketserver.ThreadingMixIn,http.server.HTTPServer):
     allow_reuse_address=False
     def __init__(self,address,binary,config,log=None):
         self.binary=pathlib.Path(binary).resolve(); self.config=CONFIGS[config].copy()
-        self.slots=threading.BoundedSemaphore(32); self.log=log
+        self.slots=threading.BoundedSemaphore(self.config.get('handlers',32)); self.log=log
         self.lifecycle=threading.Condition();self.draining=False;self.active=0
         self.counts={'accepted':0,'completed':0,'failed':0,'rejected':0}
         self.write_lock=threading.Lock(); self.config_name=config

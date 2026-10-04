@@ -19,6 +19,21 @@ class LifecycleTests(unittest.TestCase):
         deadline=time.monotonic()+2
         while self.server.status()['active']==0 and time.monotonic()<deadline:time.sleep(.005)
         self.assertEqual(self.server.status()['active'],1)
+    def test_qualified_admission_has_no_waiting_queue(self):
+        server=Server(('127.0.0.1',0),self.binary,'qualified')
+        try:
+            self.assertTrue(server.admit())
+            self.assertTrue(server.admit())
+            self.assertFalse(server.admit())
+            for _ in range(8): self.assertTrue(server.slots.acquire(blocking=False))
+            self.assertFalse(server.slots.acquire(blocking=False))
+            for _ in range(8): server.slots.release()
+            server.begin_drain()
+            server.complete(200); server.complete(200)
+            self.assertFalse(server.admit())
+            self.assertEqual(server.status()['active'],0)
+        finally: server.server_close()
+
     def test_path_replacement_does_not_change_snapshot_or_result(self):
         p=self.path/'copied';p.write_bytes(self.binary.read_bytes());p.chmod(0o700)
         original=self.server.worker;self.server.worker=WorkerSnapshot(p)

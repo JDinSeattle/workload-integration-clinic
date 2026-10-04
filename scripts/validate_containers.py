@@ -24,18 +24,18 @@ def main():
     try:
         stack.compose('build','api',timeout=600)
         write(out/'resolved-compose.json',json.loads(stack.compose('config','--format','json').stdout))
-        for index,config in enumerate(['compact','throughput','compact']):
+        for index,config in enumerate(['qualified','compact','throughput','qualified']):
             stack.env['CLINIC_CONFIG']=config;up();base=url();status,health=get(base,'/health');assert status==200 and health['config']==config
             body=case(3,'config-'+str(index));answer=request(base,body);assert correct(body,answer)
             migration.append({'config':config,'worker_sha256':health['worker_sha256'],'response':answer})
-            if index==2:break
+            if index==3:break
             load=json.loads(stack.compose('run','--rm','--no-deps','-T','client','python','container/client.py','load','--config',config,timeout=90).stdout)
             cohorts.extend(load['cohorts']);records.extend(load['records'])
         assert len({m['worker_sha256'] for m in migration})==1
         record_check('configuration_rollback',configurations=[m['config'] for m in migration])
         write(out/'migration.json',migration);write(out/'capacity.json',cohorts);write(out/'http.json',records)
         actual=json.loads(stack.execute('api','python','container/client.py','hardening').stdout)
-        quota,period=map(int,actual['cgroup']['cpu.max'].split());assert quota/period==1
+        quota,period=map(int,actual['cgroup']['cpu.max'].split());assert quota/period==2
         assert int(actual['cgroup']['memory.max'])==256*1024*1024 and actual['cgroup']['memory.swap.max']=='0' and actual['cgroup']['pids.max']=='64'
         write(out/'hardening.json',actual);write(out/'container.json',stack.inspect_summary('api'))
         record_check('nonroot_readonly_no_capabilities_cgroup_limits',observed=actual)
